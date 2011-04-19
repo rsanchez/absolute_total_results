@@ -4,9 +4,9 @@ class Absolute_total_results_ext
 {
 	public $settings = array();
 	public $name = 'Absolute Total Results';
-	public $version = '1.0.0';
+	public $version = '1.0.1';
 	public $description = 'Adds an {absolute_total_results} tag to channel:entries, for use with pagination.';
-	public $settings_exist = 'y';
+	public $settings_exist = 'n';
 	public $docs_url = 'http://barrettnewton.com';
 	
 	/**
@@ -18,7 +18,7 @@ class Absolute_total_results_ext
 	 */
 	public function __construct($settings = '')
 	{
-		$this->EE = get_instance();
+		$this->EE =& get_instance();
 		
 		$this->settings = $settings;
 	}
@@ -64,7 +64,7 @@ class Absolute_total_results_ext
 			return FALSE;
 		}
 		
-		$this->EE->db->update('extensions', array('version' => $this->version), array('class' => $this->classname));
+		$this->EE->db->update('extensions', array('version' => $this->version), array('class' => __CLASS__));
 	}
 	
 	/**
@@ -75,7 +75,7 @@ class Absolute_total_results_ext
 	 */
 	public function disable_extension()
 	{
-		$this->EE->db->delete('extensions', array('class' => $this->classname));
+		$this->EE->db->delete('extensions', array('class' => __CLASS__));
 	}
 	
 	/**
