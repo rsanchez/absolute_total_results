@@ -44,6 +44,11 @@ class Absolute_total_results_ext
 			'hook' => 'channel_entries_tagdata_end'
 		);
 		
+		$hooks[] = array(
+			'method' => 'channel_entries_query_result',
+			'hook' => 'channel_entries_query_result'
+		);
+		
 		foreach ($hooks as $hook)
 		{
 			$this->EE->db->insert('extensions', array_merge($hook_defaults, $hook));
@@ -111,6 +116,21 @@ class Absolute_total_results_ext
 		
 		return $tagdata;
         }
+        
+    
+    
+	/**
+	 * channel_entries_query_result
+	 * 
+	 * @access	public
+	 * @param	channel $channel
+	 * @param	array $query_result
+	 * @return	array
+	 */
+	public function channel_entries_query_result($channel, $query_result) {
+		$channel->paginate_data = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->total_rows, $channel->paginate_data);
+		return $query_result;
+	}
 }
 
 /* End of file ext.absolute_total_results.php */
