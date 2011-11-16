@@ -1,0 +1,1 @@
+This extension is only necessary if you want to use {absolute_total_results} or its alias, {absolute_results} within the {paginate} tag pair. If you do not need that variable within the {paginate} tag pair, you DO NOT need this extension. You may simply use the native {absolute_results} tag.

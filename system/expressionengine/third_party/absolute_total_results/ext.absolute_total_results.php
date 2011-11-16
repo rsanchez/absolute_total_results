@@ -4,7 +4,7 @@ class Absolute_total_results_ext
 {
 	public $settings = array();
 	public $name = 'Absolute Total Results';
-	public $version = '1.0.1';
+	public $version = '1.0.2';
 	public $description = 'Adds an {absolute_total_results} tag to channel:entries, for use with pagination.';
 	public $settings_exist = 'n';
 	public $docs_url = 'http://barrettnewton.com';
@@ -127,8 +127,11 @@ class Absolute_total_results_ext
 	 * @param	array $query_result
 	 * @return	array
 	 */
-	public function channel_entries_query_result($channel, $query_result) {
+	public function channel_entries_query_result($channel, $query_result)
+	{
 		$channel->paginate_data = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->total_rows, $channel->paginate_data);
+		$channel->paginate_data = $this->EE->TMPL->swap_var_single('absolute_results', $channel->total_rows, $channel->paginate_data);
+		
 		return $query_result;
 	}
 }
