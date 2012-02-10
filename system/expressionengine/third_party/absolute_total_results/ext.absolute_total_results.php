@@ -112,7 +112,14 @@ class Absolute_total_results_ext
 			$tagdata = $this->EE->extensions->last_call;
 		}
 		
-		$tagdata = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->total_rows, $tagdata);
+		if (version_compare(APP_VER, '2.4', '<'))
+		{
+			$tagdata = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->total_rows, $tagdata);
+		}
+		else
+		{
+			$tagdata = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->pagination->total_rows, $tagdata);
+		}
 		
 		return $tagdata;
         }
@@ -129,8 +136,21 @@ class Absolute_total_results_ext
 	 */
 	public function channel_entries_query_result($channel, $query_result)
 	{
-		$channel->paginate_data = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->total_rows, $channel->paginate_data);
-		$channel->paginate_data = $this->EE->TMPL->swap_var_single('absolute_results', $channel->total_rows, $channel->paginate_data);
+		if ($this->EE->extensions->last_call !== FALSE)
+		{
+			$query_result = $this->EE->extensions->last_call;
+		}
+		
+		if (version_compare(APP_VER, '2.4', '<'))
+		{
+			$channel->paginate_data = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->total_rows, $channel->paginate_data);
+			$channel->paginate_data = $this->EE->TMPL->swap_var_single('absolute_results', $channel->total_rows, $channel->paginate_data);
+		}
+		else
+		{
+			$channel->pagination->template_data = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->pagination->total_rows, $channel->pagination->template_data);
+			$channel->pagination->template_data = $this->EE->TMPL->swap_var_single('absolute_results', $channel->pagination->total_rows, $channel->pagination->template_data);
+		}
 		
 		return $query_result;
 	}
