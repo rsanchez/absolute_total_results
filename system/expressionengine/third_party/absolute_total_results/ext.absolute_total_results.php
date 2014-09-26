@@ -4,7 +4,7 @@ class Absolute_total_results_ext
 {
 	public $settings = array();
 	public $name = 'Absolute Total Results';
-	public $version = '1.0.2';
+	public $version = '1.0.3';
 	public $description = 'Adds an {absolute_total_results} tag to channel:entries, for use with pagination.';
 	public $settings_exist = 'n';
 	public $docs_url = 'http://barrettnewton.com';
@@ -95,7 +95,7 @@ class Absolute_total_results_ext
 		
 		return $settings;
 	}
-        
+		
 	/**
 	 * settings
 	 * 
@@ -105,8 +105,8 @@ class Absolute_total_results_ext
 	 * @param	Channel $channel
 	 * @return	string
 	 */
-        public function channel_entries_tagdata_end($tagdata, $row, $channel)
-        {
+	public function channel_entries_tagdata_end($tagdata, $row, $channel)
+	{
 		if ($this->EE->extensions->last_call !== FALSE)
 		{
 			$tagdata = $this->EE->extensions->last_call;
@@ -116,16 +116,18 @@ class Absolute_total_results_ext
 		{
 			$tagdata = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->total_rows, $tagdata);
 		}
-		else
+		elseif (version_compare(APP_VER, '2.8', '<'))
 		{
 			$tagdata = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->pagination->total_rows, $tagdata);
 		}
+		else
+		{
+			$tagdata = $this->EE->TMPL->swap_var_single('absolute_total_results', $channel->pagination->total_items, $tagdata);
+		}
 		
 		return $tagdata;
-        }
-        
-    
-    
+	}
+
 	/**
 	 * channel_entries_query_result
 	 * 
